@@ -96,6 +96,11 @@ dialog :is(button){
     margin-top:10px;
     margin-bottom: 10px;
 }
+.classroom h1:hover{
+    font-weight: bold;
+    font-size: 25px;
+    color:lightcoral;
+}
 
 .ogrenci-bilgi{
     display: flex;
@@ -170,6 +175,12 @@ ul{
     padding-left: 20px;
 }
 
+
+.toplamOgrenci {
+    margin-bottom:20px;
+    margin-top: 20px;
+}
+
 #allStudent{
     color:lightcoral;
 }
@@ -179,10 +190,10 @@ ul{
     margin-top:10px;
 }
 
-.option label:nth-child(3):has([name='genders']:checked){
+.option label:nth-child(5):has([name='genders']:checked){
     color:pink;
 }
-.option label:nth-child(2):has([name='genders']:checked ){
+.option label:nth-child(3):has([name='genders']:checked ){
     color:lightseagreen;
 }
 .option label:nth-child(1):has([name='genders']:checked){
