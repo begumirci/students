@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/css.css">
+    <script src="assets/js/main.js" defer></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <dialog>
+        <form method="dialog" id="studentİnfoForm">
+            <input required type="text" name="firstName" placeholder="Öğrenci Adı">
+            <input required type="text" name="lastName" placeholder="Öğrenci Soyadı">
+            <input required type="text" name="birthDate" placeholder="Öğrenci Doğum Tarihi">
+            <input required type="text" name="img" placeholder="Fotoğraf Adresi">
+            <select name="gender" id="gender">
+                <option value="">Cinsiyet Seçiniz</option>
+                <option>Kadın</option>
+                <option>Erkek</option>
+            </select>
+            <select name="classroom">
+                <option value="">Sınıf Seçiniz</option>
+                <option value="0">Sınıf A</option>
+                <option value="1">Sınıf B</option>
+                <option value="2">Sınıf C</option>
+                <option value="3">Sınıf D</option>
+            </select>
+            <button type="submit">Ekle</button>
+            <button type="reset" id="vazgec">Vazgeç</button>
+        </form>
+    </dialog>
+    <div class="students">
+        <h1>Öğrenciler</h1>
+
+        <button id="ogrenciEkle">Öğrenci Ekle</button>
+        <h3>Toplam Öğrenci : <span id="allStudent"></span></h3>
+
+    </div>
+    <div class="option" id="genderSelection" >
+        <label><input class="tümü" type="radio" name="genders" value="Tümü">Tümü</label>
+        <label><input class="erkek" type="radio" name="genders" value="Erkek">Erkek</label>
+        <label><input class="kadın" type="radio" name="genders" value="Kadın">Kadın</label>
+        <ul class="burayaYaz">
+            
+            
+        </ul>
+    </div>
+    <div class="studentContainer">
+
+        <div class="classroom" id="sinif1">
+            <h1>Sınıf A</h1>
+        </div>
+        <div class="classroom" id="sinif2">
+            <h1>Sınıf B</h1>
+        </div>
+        <div class="classroom" id="sinif3">
+            <h1>Sınıf C</h1>
+        </div>
+        <div class="classroom" id="sinif4">
+            <h1>Sınıf D</h1>
+        </div>
+
+    </div>
+</body>
+
+</html>
