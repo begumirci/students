@@ -43,6 +43,7 @@ dialog :is(button){
     color:bisque;
     font-size: 20px;
     padding:12px;
+    margin-top:15px;
 }
 
 .studentContainer{
@@ -109,6 +110,12 @@ dialog :is(button){
     gap:15px;
 }
 
+.classroom span {
+    color:lightgrey;
+    font-weight: bold;
+}
+
+
 .ogrenci-konum{
     display: flex;
     gap:30px;
@@ -144,7 +151,7 @@ h3 span{
 
 ul{
     list-style: none;
-    color:salmon;
+    color:lightcoral;
 }
 
 .students{

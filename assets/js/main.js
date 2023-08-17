@@ -10,6 +10,11 @@ const class2 = document.querySelector('#sinif2');
 const class3 = document.querySelector('#sinif3');
 const class4 = document.querySelector('#sinif4');
 
+const classA = document.querySelector('.classA');
+const classB = document.querySelector('.classB');
+const classC = document.querySelector('.classC');
+const classD = document.querySelector('.classD');
+
 
 const yazilacakYer = document.querySelector('.burayaYaz');
 
@@ -23,17 +28,8 @@ const classrooms = [
     class4
 ]
 
-let students = [
-    {
-      
-    firstName:'Begüm',
-    lastName:'Ircı',
-    gender:'Kadın',
-    birthDate:'17.04.1999',
-    img:'https://picsum.photos/id/1/80/80',
-    classroom: 1
-    }
-]
+
+let students = []
 
 dialogAc.addEventListener('click',openDialog);
 dialogKapat.addEventListener('click',closeDialog);
@@ -46,21 +42,18 @@ function closeDialog(){
     dialogElement.close();
 }
 
-let toplamOgrenci = 1;
-allStudent.innerText = toplamOgrenci;
-
 inputForm.addEventListener('submit',important);
 function important(){
     const studentData = new FormData(inputForm);
     const studentObj = Object.fromEntries(studentData.entries());
+    studentObj.id = crypto.randomUUID()
+    studentObj.classroom = Number(studentObj.classroom);
     students.push(studentObj);
     addStudent(studentObj);
-    inputForm.reset();
-    toplamOgrenci+=1;
-    allStudent.innerText = toplamOgrenci;
-    
+    inputForm.reset(); 
+    sinifMevcutu();
 }
-
+ 
 function init(){
     for (const student of students) {
         addStudent(student);
@@ -69,6 +62,7 @@ function init(){
 
 function addStudent(student){
     classrooms[student.classroom].appendChild(OgrenciOlustur(student));
+    sinifMevcutu();
 }
 
 function OgrenciOlustur(student){
@@ -79,20 +73,23 @@ function OgrenciOlustur(student){
     deleteBtn.innerText = 'Sil';
     studentİnform.appendChild(deleteBtn);
 
-    
     studentİnform.innerHTML = `<div class= 'ogrenci-konum'>
     <img src="${student.img}" alt="">
     <div class= 'ogrenci-bilgi'>
+    <h6 class="unvisible">${student.id}</h6>
     <h6>Ad Soyad: ${student.firstName} ${student.lastName}</h6>
     <h6>Cinsiyet: ${student.gender}</h6>
     <h6>Doğum Tarihi: ${student.birthDate}</h6>
     </div>
     </div>`
+    
     deleteBtn.classList.add('delBtn')
     deleteBtn.addEventListener('click',deleteStudent);
     studentİnform.appendChild(deleteBtn);
 
+    sinifMevcutu();
     return studentİnform;
+    
 }
 
 for (const btn of options) {
@@ -118,17 +115,29 @@ function change(){
             }
         }
     }
+}
+
+function sinifMevcutu(){
     
+    classA.innerText = students.filter(student => student.classroom === 0).length;
+    classB.innerText = students.filter(student => student.classroom === 1).length;
+    classC.innerText = students.filter(student => student.classroom === 2).length;
+    classD.innerText = students.filter(student => student.classroom === 3).length; 
+    allStudent.innerText = students.length;
 }
 
-
-function deleteStudent(){
+function deleteStudent(e){
+    
     this.parentElement.remove();
-    toplamOgrenci -=1;
-     allStudent.innerText = toplamOgrenci;
-
+    for (const student of students) {
+        
+        if(student.id == e.target.parentElement.children[0].children[1].children[0].innerText){
+            students.splice(students.indexOf(student),1);
+        }
+    }
+    sinifMevcutu();
 }
+
 
 init();
-
-deneme();
+sinifMevcutu();
