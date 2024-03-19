@@ -15,65 +15,70 @@ const classB = document.querySelector('.classB');
 const classC = document.querySelector('.classC');
 const classD = document.querySelector('.classD');
 
-
 const yazilacakYer = document.querySelector('.burayaYaz');
 
 const options = document.querySelectorAll('[name="genders"]');
 
+const classrooms = [class1, class2, class3, class4];
 
-const classrooms = [
-    class1,
-    class2,
-    class3,
-    class4
-]
+let students = [];
 
-
-let students = []
-
-dialogAc.addEventListener('click',openDialog);
-dialogKapat.addEventListener('click',closeDialog);
-
-function openDialog(){
-    dialogElement.showModal();
-}
-
-function closeDialog(){
-    dialogElement.close();
-}
-
-inputForm.addEventListener('submit',important);
-function important(){
-    const studentData = new FormData(inputForm);
-    const studentObj = Object.fromEntries(studentData.entries());
-    studentObj.id = crypto.randomUUID()
-    studentObj.classroom = Number(studentObj.classroom);
-    students.push(studentObj);
-    addStudent(studentObj);
-    inputForm.reset(); 
-    sinifMevcutu();
-}
- 
-function init(){
+// Sayfa yüklendiğinde, varsa local storage'dan verileri al
+function init() {
+  const storedStudents = JSON.parse(localStorage.getItem('students'));
+  if (storedStudents) {
+    students = storedStudents;
     for (const student of students) {
-        addStudent(student);
+      addStudent(student);
     }
+  }
+  sinifMevcutu();
 }
 
-function addStudent(student){
-    classrooms[student.classroom].appendChild(OgrenciOlustur(student));
-    sinifMevcutu();
+dialogAc.addEventListener('click', openDialog);
+dialogKapat.addEventListener('click', closeDialog);
+inputForm.addEventListener('submit', important);
+
+function openDialog() {
+  dialogElement.showModal();
 }
 
-function OgrenciOlustur(student){
-    const studentİnform = document.createElement('div');
-    studentİnform.classList.add('student');
+function closeDialog() {
+  dialogElement.close();
+}
 
-    const deleteBtn = document.createElement('button');
-    deleteBtn.innerText = 'Sil';
-    studentİnform.appendChild(deleteBtn);
+function important(e) {
+  e.preventDefault();
+  const studentData = new FormData(inputForm);
+  const studentObj = {};
+  for (const [key, value] of studentData.entries()) {
+    studentObj[key] = value;
+  }
+  studentObj.id = crypto.randomUUID();
+  studentObj.classroom = Number(studentObj.classroom);
+  students.push(studentObj);
+  addStudent(studentObj);
+  inputForm.reset();
 
-    studentİnform.innerHTML = `<div class= 'ogrenci-konum'>
+  sinifMevcutu();
+
+  // Verileri local storage'a kaydet
+  localStorage.setItem('students', JSON.stringify(students));
+}
+
+function addStudent(student) {
+  classrooms[student.classroom].appendChild(OgrenciOlustur(student));
+  sinifMevcutu();
+}
+
+function OgrenciOlustur(student) {
+  const studentInform = document.createElement('div');
+  studentInform.classList.add('student');
+
+  const deleteBtn = document.createElement('button');
+  deleteBtn.innerText = 'Sil';
+
+  studentInform.innerHTML = `<div class= 'ogrenci-konum'>
     <img src="${student.img}" alt="">
     <div class= 'ogrenci-bilgi'>
     <h6 class="unvisible">${student.id}</h6>
@@ -81,63 +86,65 @@ function OgrenciOlustur(student){
     <h6>Cinsiyet: ${student.gender}</h6>
     <h6>Doğum Tarihi: ${student.birthDate}</h6>
     </div>
-    </div>`
-    
-    deleteBtn.classList.add('delBtn')
-    deleteBtn.addEventListener('click',deleteStudent);
-    studentİnform.appendChild(deleteBtn);
+    </div>`;
 
-    sinifMevcutu();
-    return studentİnform;
-    
+  deleteBtn.classList.add('delBtn');
+  deleteBtn.addEventListener('click', deleteStudent);
+  studentInform.appendChild(deleteBtn);
+
+  return studentInform;
 }
 
 for (const btn of options) {
-    btn.addEventListener('click',change);
+  btn.addEventListener('click', change);
 }
 
-function change(){
-    yazilacakYer.classList.value = 'burayaYaz ' + this.value;
-    yazilacakYer.innerText = '';
-    for (const student of students) {
-        if(yazilacakYer.classList.contains('Tümü')){
-            yazilacakYer.innerHTML += `<li>${student.firstName}</li>`
-            
-        }else if(yazilacakYer.classList.contains('Erkek')){
-
-            if(student.gender === 'Erkek'){
-                yazilacakYer.innerHTML += `<li>${student.firstName}</li>`
-            }
-        }else if(yazilacakYer.classList.contains('Kadın')){
-
-            if(student.gender === 'Kadın'){
-                yazilacakYer.innerHTML += `<li>${student.firstName}</li>`
-            }
-        }
+function change() {
+  yazilacakYer.classList.value = 'burayaYaz ' + this.value;
+  yazilacakYer.innerText = '';
+  for (const student of students) {
+    if (yazilacakYer.classList.contains('Tümü')) {
+      yazilacakYer.innerHTML += `<li>${student.firstName}</li>`;
+    } else if (yazilacakYer.classList.contains('Erkek')) {
+      if (student.gender === 'Erkek') {
+        yazilacakYer.innerHTML += `<li>${student.firstName}</li>`;
+      }
+    } else if (yazilacakYer.classList.contains('Kadın')) {
+      if (student.gender === 'Kadın') {
+        yazilacakYer.innerHTML += `<li>${student.firstName}</li>`;
+      }
     }
+  }
 }
 
-function sinifMevcutu(){
-    
-    classA.innerText = students.filter(student => student.classroom === 0).length;
-    classB.innerText = students.filter(student => student.classroom === 1).length;
-    classC.innerText = students.filter(student => student.classroom === 2).length;
-    classD.innerText = students.filter(student => student.classroom === 3).length; 
-    allStudent.innerText = students.length;
+function sinifMevcutu() {
+  classA.innerText = students.filter(
+    (student) => student.classroom === 0
+  ).length;
+  classB.innerText = students.filter(
+    (student) => student.classroom === 1
+  ).length;
+  classC.innerText = students.filter(
+    (student) => student.classroom === 2
+  ).length;
+  classD.innerText = students.filter(
+    (student) => student.classroom === 3
+  ).length;
+  allStudent.innerText = students.length;
 }
 
-function deleteStudent(e){
-    
-    this.parentElement.remove();
-    for (const student of students) {
-        
-        if(student.id == e.target.parentElement.children[0].children[1].children[0].innerText){
-            students.splice(students.indexOf(student),1);
-        }
-    }
-    sinifMevcutu();
-}
+// Local storage'dan öğrenci silme
+function deleteStudent(e) {
+  this.parentElement.remove();
+  const studentId =
+    e.target.parentElement.querySelector('.unvisible').innerText;
+  students = students.filter((student) => student.id !== studentId);
 
+  sinifMevcutu();
+
+  // Güncellenmiş öğrenci listesini local storage'a kaydet
+  localStorage.setItem('students', JSON.stringify(students));
+}
 
 init();
 sinifMevcutu();
